@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
 		sprite = GetComponent<SpriteRenderer>();
+        Debug.Log("PLAYER: " + rigidbody.velocity.x + " : " + rigidbody.velocity.y);
 	}
 
 	private void FixedUpdate()
@@ -36,13 +37,14 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float moveX = Input.GetAxis("Horizontal");
-		float playerSpeed = (state == CharState.Jump) ? speedInJump : speed;
+        float playerSpeed = (state == CharState.Jump) ? speedInJump : speed;
 		//rigidbody.MovePosition(rigidbody.position + Vector2.right * moveX * playerSpeed * Time.deltaTime);
 
 		//rigidbody.MovePosition(transform.position + Vector3.right * moveX * playerSpeed * Time.deltaTime);
-		Vector2 v = rigidbody.velocity;
-		rigidbody.velocity =new Vector2( moveX * playerSpeed,v.y);
-		if (Input.GetKeyDown(KeyCode.UpArrow) && state == CharState.Run)
+		Vector2 velocity = rigidbody.velocity;
+		rigidbody.velocity = new Vector2( moveX * playerSpeed, velocity.y);
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && state == CharState.Run)
 		{
 			rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 		}
