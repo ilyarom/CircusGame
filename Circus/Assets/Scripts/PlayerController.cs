@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour {
 	public float speedInJump = 20f;
 	public float jumpForce = 150;
 	private Rigidbody2D rigidbody;
-	private SpriteRenderer sprite;
+	public SpriteRenderer sprite;
+	private AudioSource source;
+	public EnemyController enemy;
 
 	private bool rightOrientation = true;
 	private bool isGrounded = false;
@@ -17,8 +19,9 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();
-		sprite = GetComponent<SpriteRenderer>();
-        Debug.Log("PLAYER: " + rigidbody.velocity.x + " : " + rigidbody.velocity.y);
+		//sprite = GetComponent<SpriteRenderer>();
+		source = GetComponent<AudioSource>();
+		//Debug.Log("PLAYER: " + rigidbody.velocity.x + " : " + rigidbody.velocity.y);
 	}
 
 	private void FixedUpdate()
@@ -28,10 +31,10 @@ public class PlayerController : MonoBehaviour {
 
 	private void ChangeColor()
 	{
-		const float GREEN_COEFFICIENT = 0.05f;
-		const float BLUE_COEFFICIENT = 0.1f;
+		//const float GREEN_COEFFICIENT = 0.05f;
+		//const float BLUE_COEFFICIENT = 0.1f;
 		Color old = sprite.color;
-		sprite.color = new Color(old.r, old.g + GREEN_COEFFICIENT, old.b + BLUE_COEFFICIENT, old.a);
+		sprite.color = new Color(old.r, old.g, old.b, old.a - 0.1f);
 	}
 
 	// Update is called once per frame
@@ -95,6 +98,10 @@ public class PlayerController : MonoBehaviour {
 		if (other.tag == "trampoline")
 		{
 			rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+		}
+		if (other.tag == "bee")
+		{
+			source.PlayOneShot(source.clip, 99f);
 		}
 	}
 }
